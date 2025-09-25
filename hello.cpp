@@ -17,7 +17,7 @@ struct User {
 
 bool insertUser(User*& head, const string& username, const string& password, const string& role = "viewer");
 bool authorize(User* head, const string& username, const string& action);
-
+User* find(User*& head, const string& username);
 
 int main() {
 

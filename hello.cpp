@@ -23,7 +23,7 @@ int main() {
 
 	User* head = nullptr;
 	int choice;
-	string username, password;
+	string username, password, action, role;
 
 	do {
 		cout << "Authorization:\n";

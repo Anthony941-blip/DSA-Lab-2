@@ -78,7 +78,23 @@ bool insertUser(User*& head, const string& username, const string& password, con
 }
 
 
-bool authorize(User* head, const string& username, const string& action);
+bool authorize(User* head, const string& username, const string& action) {
+	User* user = find(head, username);
+	if(!user) {
+		return false;
+	}
+	if(user->role == "admin") {
+		return true;
+	} else if(user->role == "editor") {
+		return action == "view" || action == "edit" || action == "create";
+	} else if(user->role == "viewer") {
+		return action == "view";
+	} else {
+		return false;
+	}
+}
+
+
 User* find(User*& head, const string& username) {
 	while(head) {
 		if(head->username == username) {

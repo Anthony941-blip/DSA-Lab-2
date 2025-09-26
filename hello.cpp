@@ -21,7 +21,69 @@ User* find(User*& head, const string& username);
 
 int main() {
 
-	cout<< "Hello Worlrd! \n";
+	User* head = nullptr;
+	int choice;
+	string username, password;
+
+	do {
+		cout << "\Authorization:\n";
+		cout << "1. Enter user\n";
+		cout << "2. Authorize\n";
+		cout << "3. Find user\n";
+		cin >> choice;
+		cin.ignore();
+
+		switch(choice) {
+			case 1: {
+				cout << "Enter username: ";
+				getline(cin, username);
+				cout << "Enter password: ";
+				getline(cin, password);
+				inserUser(head, username, password);
+				break;
+			}
+			case 2: {
+				cout << "Enter username: ";
+				getline(cin, username);
+				cout << "Enter password: ";
+				getline(cin, password);
+				if(authorize(head, username, password)) {
+					cout << "Authorization success!\n";
+				} else {
+					cout << "Authorization denied!\n";
+				}
+		}
+	}
+}
 
 	return 0;
 }
+
+
+
+bool insertUser(User*& head, const string& username, const string& password, const string& role = "viewer") {
+	User* temp = head;
+	while(temp != nullptr) {
+		if(temp->username == username) {
+			return false;
+		}
+		temp = temp->next;
+	}
+
+	USer* newUser = new User(username, password);
+
+	if(head == nullptr) {
+		head == newUser;
+	} else {
+		temp = head;
+		while(temp->next != nullptr) {
+			temp = temp->next;
+		}
+		temp->next = newUser;
+	}
+	return true;
+}
+
+
+bool authorize(User* head, const string& username, const string& action);
+User* find(User*& head, const string& username);

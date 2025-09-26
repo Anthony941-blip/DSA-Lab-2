@@ -39,22 +39,38 @@ int main() {
 				getline(cin, username);
 				cout << "Enter password: ";
 				getline(cin, password);
-				inserUser(head, username, password);
+				insertUser(head, username, password);
 				break;
 			}
 			case 2: {
 				cout << "Enter username: ";
 				getline(cin, username);
-				cout << "Enter password: ";
-				getline(cin, password);
-				if(authorize(head, username, password)) {
+				cout << "Enter action: ";
+				getline(cin, action);
+				if(authorize(head, username, role)) {
 					cout << "Authorization success!\n";
 				} else {
 					cout << "Authorization denied!\n";
 				}
-		}
+				break;
+			}
+			case 3: {
+				cout << "Search username: ";
+				getline(cin, username);
+				User* user = find(head, username);
+				if(user) {
+					cout << "User <" << user->username <<  "> found!" << ", Role: " << user->role << "\n";
+				} else {
+					cout << "User not found.\n";
+				}
+				break;
+			}
+			case 0:
+				cout << "Exiting...\n";
+				break;
 	}
 }
+	while(choice != 0);
 
 	return 0;
 }
@@ -66,6 +82,7 @@ bool insertUser(User*& head, const string& username, const string& password, con
 	while(temp) {
 		if(temp->username == username) {
 			return false;
+		}
 			temp = temp->next;
 	}
 
@@ -73,7 +90,7 @@ bool insertUser(User*& head, const string& username, const string& password, con
 
 	newUser-> next = head;
  	head = newUser;
-	}
+
 	return true;
 }
 
@@ -91,7 +108,6 @@ bool authorize(User* head, const string& username, const string& action) {
 		return action == "view";
 	} else {
 		return false;
-	}
 }
 
 

@@ -63,27 +63,28 @@ int main() {
 
 bool insertUser(User*& head, const string& username, const string& password, const string& role = "viewer") {
 	User* temp = head;
-	while(temp != nullptr) {
+	while(temp) {
 		if(temp->username == username) {
 			return false;
-		}
-		temp = temp->next;
+			temp = temp->next;
 	}
 
-	USer* newUser = new User(username, password);
+	User* newUser = new User(username, password, role);
 
-	if(head == nullptr) {
-		head == newUser;
-	} else {
-		temp = head;
-		while(temp->next != nullptr) {
-			temp = temp->next;
-		}
-		temp->next = newUser;
+	newUser-> next = head;
+ 	head = newUser;
 	}
 	return true;
 }
 
 
 bool authorize(User* head, const string& username, const string& action);
-User* find(User*& head, const string& username);
+User* find(User*& head, const string& username) {
+	while(head) {
+		if(head->username == username) {
+			return head;
+		}
+		head = head->next;
+	}
+	return nullptr;
+}

@@ -26,7 +26,7 @@ int main() {
 	string username, password;
 
 	do {
-		cout << "\Authorization:\n";
+		cout << "Authorization:\n";
 		cout << "1. Enter user\n";
 		cout << "2. Authorize\n";
 		cout << "3. Find user\n";
@@ -47,7 +47,7 @@ int main() {
 				getline(cin, username);
 				cout << "Enter action: ";
 				getline(cin, action);
-				if(authorize(head, username, role)) {
+				if(authorize(head, username, action)) {
 					cout << "Authorization success!\n";
 				} else {
 					cout << "Authorization denied!\n";
@@ -77,7 +77,7 @@ int main() {
 
 
 
-bool insertUser(User*& head, const string& username, const string& password, const string& role = "viewer") {
+bool insertUser(User*& head, const string& username, const string& password, const string& role) {
 	User* temp = head;
 	while(temp) {
 		if(temp->username == username) {
@@ -96,20 +96,22 @@ bool insertUser(User*& head, const string& username, const string& password, con
 
 
 bool authorize(User* head, const string& username, const string& action) {
-	User* user = find(head, username);
-	if(!user) {
-		return false;
+    User* user = find(head, username);
+	 if(!user) {
+        	return false;
 	}
-	if(user->role == "admin") {
-		return true;
-	} else if(user->role == "editor") {
-		return action == "view" || action == "edit" || action == "create";
-	} else if(user->role == "viewer") {
-		return action == "view";
-	} else {
-		return false;
-}
 
+	if(user->role == "admin") {
+        	return true;
+
+	} else if(user->role == "editor") {
+        return action == "view" || action == "edit" || action == "create";
+
+ 	} else if(user->role == "viewer") {
+        	return action == "view";
+    }
+    return false;
+}
 
 User* find(User*& head, const string& username) {
 	while(head) {

@@ -1,22 +1,23 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 struct User {
     string username;
     string password;
-    string role; // "admin", "editor", "viewer"
+    vector<string> permissions; // "admin", "editor", "viewer"
     User* next;
 
     User(const string& u, const string& p, const string& r = "viewer") {
         username = u;
         password = p;
-        role = r;
+        permissions = r;
         next = nullptr;
     }
 };
 
 
-bool insertUser(User*& head, const string& username, const string& password, const string& role = "viewer");
+bool insertUser(User*& head, const string& username, const string& password, const string& permissions = "viewer");
 bool authorize(User* head, const string& username, const string& action);
 User* find(User* head, const string& username);
 
@@ -42,9 +43,9 @@ int main() {
                 cout << "Enter password: ";
                 getline(cin, password);
                 cout << "Enter role (admin/editor/viewer): ";
-                getline(cin, role);
+                getline(cin, permissions);
 
-                if(insertUser(head, username, password, role)) {
+                if(insertUser(head, username, password, permissions)) {
                     cout << "User added successfully!\n";
                 } else {
                     cout << "User already exists!\n";
@@ -69,7 +70,7 @@ int main() {
                 getline(cin, username);
                 User* user = find(head, username);
                 if(user) {
-                    cout << "User <" << user->username << "> Role: " << user->role << "\n";
+                    cout << "User <" << user->username << "> Role: " << user->permissions << "\n";
                 } else {
                     cout << "User not found.\n";
                 }
@@ -87,7 +88,7 @@ int main() {
 }
 
 
-bool insertUser(User*& head, const string& username, const string& password, const string& role) {
+bool insertUser(User*& head, const string& username, const string& password, const string& permissions) {
     User* temp = head;
     while(temp) {
         if(temp->username == username) {
@@ -96,7 +97,7 @@ bool insertUser(User*& head, const string& username, const string& password, con
         temp = temp->next;
     }
 
-    User* newUser = new User(username, password, role);
+    User* newUser = new User(username, password, permissions);
     newUser->next = head;
     head = newUser;
     return true;
@@ -108,11 +109,11 @@ bool authorize(User* head, const string& username, const string& action) {
         return false;
     }
 
-    if(user->role == "admin") {
+    if(user->permissions == "admin") {
         return true;
-    } else if(user->role == "editor") {
+    } else if(user->permissions == "editor") {
         return action == "view" || action == "edit" || action == "create";
-    } else if(user->role == "viewer") {
+    } else if(user->permissions == "viewer") {
         return action == "view";
     }
     return false;
